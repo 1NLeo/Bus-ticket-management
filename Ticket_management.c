@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <locale.h>
+#include <ctype.h> // tolower
 
 #define reset   "\033[0m"
 #define green "\033[32m"
@@ -61,6 +62,10 @@
                     printf ("Digite seu nome completo: \n");
                     fgets (users[nome], 49, stdin);
                     
+                    for (int i = 0; users[nome][i] != '\0'; i++){
+                         users[nome][i] = tolower(users[nome][i]);
+                    }
+                    
                     nome++;
                     nusers++;
 
@@ -97,7 +102,7 @@
                             }
 
                             if (achado == 1){
-                                    printf ("Você já possui cadastro \n:)");
+                                    printf ("Você já possui cadastro :)\n");
                                     break;
                                 }
                                 else {
