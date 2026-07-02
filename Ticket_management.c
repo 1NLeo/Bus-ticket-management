@@ -33,13 +33,10 @@
 
         setlocale(LC_ALL, ".UTF-8");
 
-        int opt, nome = 1, oldnome = 1, nusers = 1, ver;
-        int seat[4][5] = {{1, 2, 3, 4, 5},
-                          {6, 7, 8, 9, 10},
-                          {11, 12, 13, 14, 15},
-                          {16, 17, 18, 19, 20}};
-
-        char users [100][50];
+        int opt = 0, nome = 0, oldnome = 1, nusers = 1, ver = 0, nova_reserva = 0, conf = 0;
+        int seat[21];      // fazer com vetor no lugar da matriz 
+        int reservado [21];
+        char user [nusers][50];
         char olduser [100][50];
         
 
@@ -59,28 +56,50 @@
 
                 switch (opt) {
                     case 1:
-                    printf ("Digite seu nome completo: \n");
-                    fgets (users[nome], 49, stdin);
-                    
-                    for (int i = 0; users[nome][i] != '\0'; i++){
-                         users[nome][i] = tolower(users[nome][i]);
-                    }
-                    
-                    nome++;
-                    nusers++;
+                        printf("Digite seu nome completo: \n");
+                        fgets(user[nome], 49, stdin);
 
+                            for (int i = 0; user[nome][i] != '\0'; i++){
+                                user[nome][i] = tolower(user[nome][i]);
+                            }
+
+                            int cad = 0;
+                            for (int i = 0; i < nome; i++){
+                                ver = strcmp(user[i], user[nome]); // return 0 when true
+                                if (ver == 0) {
+                                    cad = 1;
+                                    break;
+                                }
+                            }
+
+                            if (cad == 0) {
+                                nome++;
+                                nusers++;
+                                printf(green "Usuário cadastrado com sucesso!\n" reset);
+                            } else {
+                                printf("Você já possui cadastro.\n");
+                            }
+                        
                     break;
 
                     case 2:
-                        printf (cyan "Assentos disponíveis\n" reset);
+                        printf (cyan "Assentos disponíveis\n" reset); // fazer o continue funcionar
+                        
 
-                        for (int i = 0; i < 4; i++){
-                            for (int j = 0; j < 5; j++){
-                                printf ("%d ", seat[i][j]);
+                        for (int i = 1; i < 21; i++){
+                            int disponivel = 1;
+                            for (int j = 0; j < 20; j++){
+                                if (reservado[j] == i){
+                                    disponivel = 0;   
+                                }
                             }
-
-                            printf ("\n");
+                                if (disponivel == 1){
+                                    printf ("%d\n", i);
                         }
+                        }
+                       
+                            
+                    
 
                     break;
 
@@ -92,9 +111,12 @@
                         int achado = 0;
                             for (int i = 0; i < 8; i++){ // Conferir se ja tem cadastro, se tiver montar outra estrutura para vizualizar
                                                         // Reservas antigas
+                                                        // Tolower funcionando: Jogar ele para o switch 1 para verificar o cadastro;
                                                     
-                                                    
-                                ver = strcmp(users[i], olduser[oldnome]);
+                            for (int i = 0; olduser[oldnome][i] != '\0'; i++){
+                            olduser[oldnome][i] = tolower(olduser[oldnome][i]);
+                            }                    
+                                ver = strcmp(user[i], olduser[oldnome]);
                                 if (ver == 0){
                                     achado = 1;
                                     break;
@@ -111,8 +133,39 @@
                     break;
                             
                     case 4:
-
+                
                     printf ( cyan "Reserva de assento\n" reset);
+                    printf ("Qual assento você deseja reservar: ");
+                    scanf ("%d", &nova_reserva);
+                    int indisp = 0; 
+
+                        for (int i = 1; i < 21; i++){
+                             if (reservado[i] == nova_reserva){
+                                indisp = 1;
+                                break;
+                            }
+                            
+                        }
+
+                          if (indisp == 1){
+                          printf ("Infelizmente esse assento ja foi reservado ):\n");
+                          }
+                            
+                          else if (indisp == 0) {
+                          printf (green "Assento Reservado!\n" reset);
+                          reservado[conf] = nova_reserva;
+                          conf++;
+                          }
+
+                    break;
+
+                    case 5: 
+                        printf( red "Saindo...\n" reset);
+                    break;
+
+                    default:
+                        printf (red "ERROR:" reset "Digite uma das opções abaixo: \n");
+                    break;
                 }
                    
                         
