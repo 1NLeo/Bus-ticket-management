@@ -8,36 +8,20 @@
 #define cyan   "\033[36m"
 #define red "\033[31m"
 
-// Descrição do Projeto: Sistema de Gerenciamento de Passagens de Ônibus
-
-// O objetivo deste projeto é desenvolver um sistema em linguagem C para o gerenciamento de passagens de ônibus. 
-// O programa deve interagir com o usuário por meio de um menu dinâmico, oferecendo inicialmente as seguintes funcionalidades:
-
-// Verificar disponibilidade de assentos: Exibir visualmente quais assentos do ônibus estão livres ou ocupados.
-
-// Reservar um assento: Permitir que o usuário escolha um assento disponível e realize a reserva, atualizando o status do mapa do ônibus.
-
-// Consulta por Passageiro (Pesquisa)
-// Consultar assentos reservados por esse passageiro
-// Quero que você tente fazer esse desafio sem utilizar structs e depois utilizando structs
-
-
-// Login area :
-// 1- Cadastrar usuário
-// 2- Vizualizar assentos disponiveis
-// 3- Vizualizar reservas antigas
-// 4- Reservar assento
-// 5- Sair
+#define max_users 100
+#define max_reservas 21
 
     int main (){
 
         setlocale(LC_ALL, ".UTF-8");
 
-        int opt = 0, nome = 0, oldnome = 1, nusers = 1, ver = 0, nova_reserva = 0, conf = 0;
-        int seat[21];      
-        int reservado [21];
-        char user [nusers][50];
-        char olduser [nusers][50];
+        int opt = 0, nome = 0, oldnome = 1, ver = 0, nova_reserva = 0, conf = 0;
+        int inic_var = 0; // inicar a variavel das reservas
+        int seat[max_reservas];      
+        int reservado [max_reservas];
+        char user [max_users][50];
+        char olduser [max_users][50];
+        int reservas[max_reservas];
         
 
 
@@ -73,8 +57,8 @@
                             }
 
                             if (cad == 0) {
+                                inic_var ++;
                                 nome++;
-                                nusers++;
                                 printf(green "Usuário cadastrado com sucesso!\n" reset);
                             } else {
                                 printf("Você já possui cadastro.\n");
@@ -109,9 +93,7 @@
                         printf ("Digite seu nome completo: ");
                         fgets (olduser[oldnome], 49, stdin);
                         int achado = 0;
-                            for (int i = 0; i < 8; i++){ // Conferir se ja tem cadastro, se tiver montar outra estrutura para vizualizar
-                                                        // Reservas antigas
-                                                        // Tolower funcionando: Jogar ele para o switch 1 para verificar o cadastro;
+                            for (int i = 0; i < nome; i++){ 
                                                     
                             for (int i = 0; olduser[oldnome][i] != '\0'; i++){
                             olduser[oldnome][i] = tolower(olduser[oldnome][i]);
@@ -124,8 +106,9 @@
                             }
 
                             if (achado == 1){ // Usuário verificado
-                                    for (int i = 0; i < 20; i++){
 
+                                    for (int i = inic_var - 1; i < conf; i++){ // verify  
+                                        printf ("Assento número %d reservado\n", reservas[i]);
                                     }
                                     break;
                                 }
@@ -137,27 +120,71 @@
                     case 4:
                 
                     printf ( cyan "Reserva de assento\n" reset);
-                    printf ("Qual assento você deseja reservar: ");
-                    scanf ("%d", &nova_reserva);
-                    int indisp = 0; 
+                    printf ("Digite seu nome completo: ");
+                    fgets (olduser[oldnome], 49, stdin);
+                    int encontrado = 0;
 
-                        for (int i = 1; i < 21; i++){
-                             if (reservado[i] == nova_reserva){
-                                indisp = 1;
-                                break;
+                            for (int i = 0; i < nome; i++){  
+                                                    
+                                for (int j = 0; olduser[oldnome][j] != '\0'; j++){
+                                olduser[oldnome][j] = tolower(olduser[oldnome][j]);
+                                }                    
+                                    ver = strcmp(user[i], olduser[oldnome]);
+                                    if (ver == 0){
+                                        encontrado = 1; // retorna acahado = 1 se os nomes forem iguais
+                                        break;
+                                    }
+                                }
+
+                                if (encontrado == 1){ // Usuário verificado
+                                    printf ("Qual assento você deseja reservar: ");
+                                    scanf ("%d", &nova_reserva);
+                                    int indisp = 0; 
+
+                                    for (int i = 0; i < max_reservas; i++){
+                                        if (reservado[i] == nova_reserva){
+                                            indisp = 1; // retorna indisp = 1 se o assento estiver indisponivel
+                                            break;
+                                        }    
+                                    }
+
+                                if (indisp == 0) {
+                                    printf (green "Assento Reservado!\n" reset);
+                                    reservado[conf] = nova_reserva;
+                                    reservas[conf] = nova_reserva;
+                                    conf++;
+                                }
+
+                                else {
+                                // loop funcionando :)    
+                                    while (indisp == 1) {
+                                        printf ("Infelizmente esse assento ja foi reservado ):\n");
+                                        printf ("Escolha outro assento: ");
+                                        scanf ("%d", &nova_reserva);
+                                        indisp = 0;
+
+                                            for (int i = 0; i < 21; i++){
+                                                if (reservado[i] == nova_reserva){
+                                                    indisp = 1;
+                                                    break;
+                                                } 
+
+                                            }
+                                    }
+
+                                    printf (green "Assento Reservado!\n" reset);
+                                    reservado[conf] = nova_reserva;
+                                    reservas[conf] = nova_reserva;
+                                    conf++;
+                                }   
                             }
-                            
-                        }
+                                else {
+                                    printf ("O nome informado está incorreto ou não foi cadastrado. \n");
+                                }
+                    
+                    
 
-                          if (indisp == 1){
-                          printf ("Infelizmente esse assento ja foi reservado ):\n");
-                          }
-                            
-                          else if (indisp == 0) {
-                          printf (green "Assento Reservado!\n" reset);
-                          reservado[conf] = nova_reserva;
-                          conf++;
-                          }
+
 
                     break;
 
@@ -166,14 +193,11 @@
                     break;
 
                     default:
-                        printf (red "ERROR:" reset "Digite uma das opções abaixo: \n");
+                        printf (red "ERRO:" reset "Digite uma das opções abaixo: \n");
                     break;
                 }
-                   
-                        
+                          
             } while (opt != 5);
-        
-
         
 
         return 0;
