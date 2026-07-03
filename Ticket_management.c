@@ -34,10 +34,10 @@
         setlocale(LC_ALL, ".UTF-8");
 
         int opt = 0, nome = 0, oldnome = 1, nusers = 1, ver = 0, nova_reserva = 0, conf = 0;
-        int seat[21];      // fazer com vetor no lugar da matriz 
+        int seat[21];      
         int reservado [21];
         char user [nusers][50];
-        char olduser [100][50];
+        char olduser [nusers][50];
         
 
 
@@ -123,12 +123,14 @@
                                 }
                             }
 
-                            if (achado == 1){
-                                    printf ("Você já possui cadastro :)\n");
+                            if (achado == 1){ // Usuário verificado
+                                    for (int i = 0; i < 20; i++){
+
+                                    }
                                     break;
                                 }
                                 else {
-                                    printf ("Não possui cadastro ainda \n");
+                                    printf ("O nome informado está incorreto ou não foi cadastrado. \n");
                                 }
                     break;
                             
