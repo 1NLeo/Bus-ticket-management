@@ -25,7 +25,6 @@
         int reservas[max_reservas];
         
 
-
             do{
             printf("========================================\n");
             printf("|" cyan "           Viagem de ônibus" reset     "           |\n" );
