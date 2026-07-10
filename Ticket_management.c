@@ -9,75 +9,75 @@
 #define red "\033[31m"
 
 #define max_users 100
-#define max_reservas 21
+#define max_reservations 21
 
 
     int main (){
 
         setlocale(LC_ALL, ".UTF-8");
 
-        int opt = 0, nome = 0, oldnome = 1, ver = 0, nova_reserva = 0, conf = 0;
-        int inic_var = 0; // inicar a variavel das reservas
-        int seat[max_reservas];      
-        int reservado [max_reservas];
+        int opt = 0, name = 0, old_name = 1, cmp_result = 0, new_reservation = 0, confirmed = 0;
+        int init_var = 0; // initialize the reservations variable
+        int seat[max_reservations];      
+        int reserved [max_reservations];
         char user [max_users][50];
-        char olduser [max_users][50];
-        int reservas[max_reservas];
+        char old_user [max_users][50];
+        int reservations[max_reservations];
         
 
             do{
             printf("========================================\n");
-            printf("|" cyan "           Viagem de ônibus" reset     "           |\n" );
+            printf("|" cyan "             Bus Trip"                reset     "               |\n" );
             printf("========================================\n");
-            printf ("|" green " [1]" reset " Cadastrar usuário                |  \n");
-            printf ("|" green " [2]" reset " Vizualizar assentos disponíveis  |  \n");
-            printf ("|" green " [3]" reset " Vizualizar reservas antigas      |  \n");
-            printf ("|" green " [4]" reset " Reservar assento                 |  \n");
-            printf ("|" green " [5]" reset " Sair                             |  \n"); 
+            printf ("|" green " [1]" reset " Register user                    |  \n");
+            printf ("|" green " [2]" reset " View available seats             |  \n");
+            printf ("|" green " [3]" reset " View past reservations           |  \n");
+            printf ("|" green " [4]" reset " Reserve a seat                   |  \n");
+            printf ("|" green " [5]" reset " Exit                             |  \n"); 
             printf ("========================================\n");
             scanf ("%d", &opt);
             getchar();
 
                 switch (opt) {
                     case 1:
-                        printf("Digite seu nome completo: \n");
-                        fgets(user[nome], 49, stdin);
+                        printf("Enter your full name: \n");
+                        fgets(user[name], 49, stdin);
 
-                            for (int i = 0; user[nome][i] != '\0'; i++){
-                                user[nome][i] = tolower(user[nome][i]);
+                            for (int i = 0; user[name][i] != '\0'; i++){
+                                user[name][i] = tolower(user[name][i]);
                             }
 
-                            int cad = 0;
-                            for (int i = 0; i < nome; i++){
-                                ver = strcmp(user[i], user[nome]); // return 0 when true
-                                if (ver == 0) {
-                                    cad = 1;
+                            int registered = 0;
+                            for (int i = 0; i < name; i++){
+                                cmp_result = strcmp(user[i], user[name]); // returns 0 when true
+                                if (cmp_result == 0) {
+                                    registered = 1;
                                     break;
                                 }
                             }
 
-                            if (cad == 0) {
-                                inic_var ++;
-                                nome++;
-                                printf(green "Usuário cadastrado com sucesso!\n" reset);
+                            if (registered == 0) {
+                                init_var ++;
+                                name++;
+                                printf(green "User registered successfully!\n" reset);
                             } else {
-                                printf("Você já possui cadastro.\n");
+                                printf("You are already registered.\n");
                             }
                         
                     break;
 
                     case 2:
-                        printf (cyan "Assentos disponíveis\n" reset); // fazer o continue funcionar
+                        printf (cyan "Available seats\n" reset); // make continue work
                         
 
                         for (int i = 1; i < 21; i++){
-                            int disponivel = 1;
+                            int available = 1;
                             for (int j = 0; j < 20; j++){
-                                if (reservado[j] == i){
-                                    disponivel = 0;   
+                                if (reserved[j] == i){
+                                    available = 0;   
                                 }
                             }
-                                if (disponivel == 1){
+                                if (available == 1){
                                     printf ("%d\n", i);
                         }
                         }
@@ -89,97 +89,97 @@
 
                     case 3:
                     
-                        printf (cyan "Reservas antigas\n" reset);
-                        printf ("Digite seu nome completo: ");
-                        fgets (olduser[oldnome], 49, stdin);
-                        int achado = 0;
-                            for (int i = 0; i < nome; i++){ 
+                        printf (cyan "Past reservations\n" reset);
+                        printf ("Enter your full name: ");
+                        fgets (old_user[old_name], 49, stdin);
+                        int found = 0;
+                            for (int i = 0; i < name; i++){ 
                                                     
-                            for (int i = 0; olduser[oldnome][i] != '\0'; i++){
-                            olduser[oldnome][i] = tolower(olduser[oldnome][i]);
+                            for (int i = 0; old_user[old_name][i] != '\0'; i++){
+                            old_user[old_name][i] = tolower(old_user[old_name][i]);
                             }                    
-                                ver = strcmp(user[i], olduser[oldnome]);
-                                if (ver == 0){
-                                    achado = 1;
+                                cmp_result = strcmp(user[i], old_user[old_name]);
+                                if (cmp_result == 0){
+                                    found = 1;
                                     break;
                                 }
                             }
 
-                            if (achado == 1){ // Usuário verificado
+                            if (found == 1){ // user verified
 
-                                    for (int i = inic_var - 1; i < conf; i++){ // verify  
-                                        printf ("Assento número %d reservado\n", reservas[i]);
+                                    for (int i = init_var - 1; i < confirmed; i++){ // verify  
+                                        printf ("Seat number %d reserved\n", reservations[i]);
                                     }
                                     break;
                                 }
                                 else {
-                                    printf ("O nome informado está incorreto ou não foi cadastrado. \n");
+                                    printf ("The name entered is incorrect or not registered. \n");
                                 }
                     break;
                             
                     case 4:
                 
-                    printf ( cyan "Reserva de assento\n" reset);
-                    printf ("Digite seu nome completo: ");
-                    fgets (olduser[oldnome], 49, stdin);
-                    int encontrado = 0;
+                    printf ( cyan "Seat reservation\n" reset);
+                    printf ("Enter your full name: ");
+                    fgets (old_user[old_name], 49, stdin);
+                    int found2 = 0;
 
-                            for (int i = 0; i < nome; i++){  
+                            for (int i = 0; i < name; i++){  
                                                     
-                                for (int j = 0; olduser[oldnome][j] != '\0'; j++){
-                                olduser[oldnome][j] = tolower(olduser[oldnome][j]);
+                                for (int j = 0; old_user[old_name][j] != '\0'; j++){
+                                old_user[old_name][j] = tolower(old_user[old_name][j]);
                                 }                    
-                                    ver = strcmp(user[i], olduser[oldnome]);
-                                    if (ver == 0){
-                                        encontrado = 1; // retorna acahado = 1 se os nomes forem iguais
+                                    cmp_result = strcmp(user[i], old_user[old_name]);
+                                    if (cmp_result == 0){
+                                        found2 = 1; // returns found2 = 1 if the names match
                                         break;
                                     }
                                 }
 
-                                if (encontrado == 1){ // Usuário verificado
-                                    printf ("Qual assento você deseja reservar: ");
-                                    scanf ("%d", &nova_reserva);
-                                    int indisp = 0; 
+                                if (found2 == 1){ // user verified
+                                    printf ("Which seat would you like to reserve: ");
+                                    scanf ("%d", &new_reservation);
+                                    int unavailable = 0; 
 
-                                    for (int i = 0; i < max_reservas; i++){
-                                        if (reservado[i] == nova_reserva){
-                                            indisp = 1; // retorna indisp = 1 se o assento estiver indisponivel
+                                    for (int i = 0; i < max_reservations; i++){
+                                        if (reserved[i] == new_reservation){
+                                            unavailable = 1; // returns unavailable = 1 if the seat is unavailable
                                             break;
                                         }    
                                     }
 
-                                if (indisp == 0) {
-                                    printf (green "Assento Reservado!\n" reset);
-                                    reservado[conf] = nova_reserva;
-                                    reservas[conf] = nova_reserva;
-                                    conf++;
+                                if (unavailable == 0) {
+                                    printf (green "Seat reserved!\n" reset);
+                                    reserved[confirmed] = new_reservation;
+                                    reservations[confirmed] = new_reservation;
+                                    confirmed++;
                                 }
 
                                 else {
-                                // loop funcionando :)    
-                                    while (indisp == 1) {
-                                        printf ("Infelizmente esse assento ja foi reservado ):\n");
-                                        printf ("Escolha outro assento: ");
-                                        scanf ("%d", &nova_reserva);
-                                        indisp = 0;
+                                // loop working :)    
+                                    while (unavailable == 1) {
+                                        printf ("Unfortunately this seat has already been reserved ):\n");
+                                        printf ("Choose another seat: ");
+                                        scanf ("%d", &new_reservation);
+                                        unavailable = 0;
 
                                             for (int i = 0; i < 21; i++){
-                                                if (reservado[i] == nova_reserva){
-                                                    indisp = 1;
+                                                if (reserved[i] == new_reservation){
+                                                    unavailable = 1;
                                                     break;
                                                 } 
 
                                             }
                                     }
 
-                                    printf (green "Assento Reservado!\n" reset);
-                                    reservado[conf] = nova_reserva;
-                                    reservas[conf] = nova_reserva;
-                                    conf++;
+                                    printf (green "Seat reserved!\n" reset);
+                                    reserved[confirmed] = new_reservation;
+                                    reservations[confirmed] = new_reservation;
+                                    confirmed++;
                                 }   
                             }
                                 else {
-                                    printf ("O nome informado está incorreto ou não foi cadastrado. \n");
+                                    printf ("The name entered is incorrect or not registered. \n");
                                 }
                     
                     
@@ -189,11 +189,11 @@
                     break;
 
                     case 5: 
-                        printf( red "Saindo...\n" reset);
+                        printf( red "Exiting...\n" reset);
                     break;
 
                     default:
-                        printf (red "ERRO:" reset "Digite uma das opções abaixo: \n");
+                        printf (red "ERROR:" reset " Enter one of the options below: \n");
                     break;
                 }
                    
