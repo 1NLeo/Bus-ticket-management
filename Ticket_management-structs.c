@@ -19,8 +19,11 @@ struct user_reservation {
 
 
 };
+typedef struct user_reservation user_reservation;
 
     int main (){
+    
+    user_reservation user[max_reservations];
 
     setlocale(LC_ALL, ".UTF-8");
 
